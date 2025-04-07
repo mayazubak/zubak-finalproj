@@ -1,11 +1,11 @@
 # zubak-finalproj
  
-1. Program logic:
+*1. Program logic:*
 
 My project will be an implementation of a combination of the Mini-Mental State Examination (MMSE), and the Digit Span test. The MMSE is a series of questions that is aimed to measure cognitive impairment. Digit span is a test that measures short-term memory and working memory by testing one's ability to repeat a series of numbers in order. The MMSE is specifically designed to measure cognitve impairment in older individuals, but I believe that it can be integrated with the digit span test to be able to measure a larger range of people. 
 
 
-2. Functions and the parameters they take:
+*2. Functions and the parameters they take:*
 
 Function 1: generateDigits(length, delivery)
 
@@ -21,7 +21,7 @@ this function will combine the score from the digit span test and the MMSE to di
 
 responses will store the users responses in a list from the whole test to calculate the score in the end. 
 
-3. Example use cases:
+*3. Example use cases:*
 
 - in a hospital setting to quickly measure preliminary cognitive function
 - research settings to compare cognitive function of younger and older patients
