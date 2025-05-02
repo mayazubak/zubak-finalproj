@@ -1,5 +1,5 @@
 import random
-from config import SHAPES, WORDS, SHAPE_PATHS
+from config.config import SHAPES, WORDS, SHAPE_PATHS
 from datetime import datetime
 
 # chat gpt assisted me in the logic for checking if the user ordered numbers correctly and checking image paths in identity shape
