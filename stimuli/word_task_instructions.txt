@@ -1,0 +1,7 @@
+INSTRUCTIONS:
+
+For this task, you will be shown 3 words and be asked to recall them after a short delay. 
+
+After clicking 'Begin task', you will be shown the words for 3 seconds, then please type them and hit 'Submit.'
+
+Click the 'Begin task' button when you are ready to begin.

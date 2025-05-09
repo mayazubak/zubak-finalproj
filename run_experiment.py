@@ -1,9 +1,19 @@
 from src import exp
 from src import gui
+from src.gui_test import Test
 
 # test file description
 
 def main():
+    test = Test()
+    test.ask_initial_questions()
+    test.word_recall()
+    test.order_numbers(5)
+    test.digit_recall(5)
+    test.identify_shape(5)
+    final_score = test.calculate_score()
+    print(f"\nYour final score: {final_score}")
+
     
     # test launches, programs creates an instance of the Test class
     
