@@ -1,7 +1,0 @@
-INSTRUCTIONS
-
-For this task, you will be shown a series of unordered numbers.
-
-Please type them back in increasing order. Ensure that the numbers are seperated by spaces. 
-
-Click 'Begin task' when you are ready to start. 

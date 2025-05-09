@@ -1,5 +1,5 @@
 import tkinter as tk
-from src.gui_exp import ExpGUI
+from src.gui_test import ExpGUI
 from config.config import Config
 
 def main():
