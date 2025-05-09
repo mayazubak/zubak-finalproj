@@ -1,11 +1,11 @@
 from src import exp
 from src import gui
-from src.gui_test import Test
+from src.gui_exp import GUITest
 
 # test file description
 
 def main():
-    test = Test()
+    test = GUITest()
     test.ask_initial_questions()
     test.word_recall()
     test.order_numbers(5)

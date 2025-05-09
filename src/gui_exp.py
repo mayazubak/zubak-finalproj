@@ -15,7 +15,7 @@ from datetime import datetime
 # also gave me a quick 'crash course' in how to use map
 
 
-class GUITest:
+class ExpGUI:
     def __init__(self, root):
         self.root = root
         self.frame = tk.Frame(self.root, bg="white")
@@ -24,6 +24,8 @@ class GUITest:
         self.score = 0
         self.responses = {}
         self.shape_score = 0
+        self.question_index = 0
+
 
         
         self.questions = [
@@ -94,7 +96,7 @@ class GUITest:
     def order_numbers(self, length):
         self.digits = [random.randint(0, 100) for i in range(length)]
         self.label.config(text="Please enter the following numbers in increasing order: ")
-        self.label.config(text=" ".join(map(str, digits)))
+        self.label.config(text=" ".join(map(str, self.digits)))
         self.entry.delete(0, tk.END)
         self.entry.pack(pady=10)
         self.button.config(text="Submit", command=self.check_order)
@@ -358,12 +360,12 @@ class GUITest:
     
 
 if __name__ == "__main__":
-    root = tk.Tk
+    root = tk.Tk()
     root.title("Experiment")
     root.geometry(f"{Config.window_width}x{Config.window_height}")
     root.configure(bg="white")
     
-    test = GUITest(root)
+    test = ExpGUI(root)
     test.start()
     
     root.mainloop()
