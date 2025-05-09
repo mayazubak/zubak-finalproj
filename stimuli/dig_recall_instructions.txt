@@ -1,0 +1,7 @@
+INSTRUCTIONS
+
+For this task, you will be presented a short series of digits.
+
+After a short delay, you will be asked to recall the digits that you were shown. Ensure that you recall them in order. 
+
+Click 'Begin task' when you are ready.

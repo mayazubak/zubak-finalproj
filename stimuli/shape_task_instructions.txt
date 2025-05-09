@@ -1,0 +1,7 @@
+INSTRUCTIONS
+
+For this task, you will be shown a series of shapes. These will be presented to you one by one.
+
+After seeing the shape, please type what the shape is and press the 'Submit' button. 
+
+Click 'Begin task' when you are ready to start. 
