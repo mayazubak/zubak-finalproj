@@ -14,6 +14,7 @@ from datetime import datetime
 # chat gpt assisted me in the logic for checking if the user ordered numbers correctly and checking image paths in identity shape
 # also gave me a quick 'crash course' in how to use map
 # got very familiar with tkinter !
+# CHATGPT HELPED ME FIGURE OUT HOW TO ENSURE IT WAS CLEAR TO DOWNLOAD IMAGES TO LOCAL DEVICE
 
 
 class ExpGUI:
