@@ -1,6 +1,6 @@
 # zubak-finalproj
 
-# make sure to pip install pillow #
+## make sure to pip install pillow ##
  
 **1. Program logic:**
 
