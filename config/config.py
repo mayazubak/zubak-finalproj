@@ -42,13 +42,13 @@ class Config:
 
     # dictionary to store shapes and paths to display in recognition task
     SHAPE_PATHS = {
-        "triangle": "shapes/triangle.jpg",
-        "rectangle": "rectangle/rectangle.jpg",
-        "square": "square/square.jpg",
-        "hexagon": "hexagon/hexagon.jpg",
-        "circle": "circle/circle.jpg",
-        "oval": "oval/oval.jpg",
-        "rhombus": "rhombus/rhombus.jpg"
+        "triangle": "stimuli/triangle.jpg",
+        "rectangle": "stimuli/rectangle.jpg",
+        "square": "stimuli/square.jpg",
+        "hexagon": "stimuli/hexagon.jpg",
+        "circle": "stimuli/circle.jpg",
+        "oval": "stimuli/oval.jpg",
+        "rhombus": "stimuli/rhombus.jpg"
     }
     
     ######

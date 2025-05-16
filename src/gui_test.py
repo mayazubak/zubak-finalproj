@@ -22,12 +22,13 @@ class ExpGUI:
         self.frame = tk.Frame(self.root, bg="white")
         self.frame.pack(expand=True, fill="both")
         self.root.bind("<Return>", self.handle_enter_key) #chatgpt helped me with this function to allow users to submit with ener key
-
         
         self.score = 0
         self.responses = {}
         self.shape_score = 0
         self.question_index = 0
+        
+
 
         
         self.questions = [
@@ -38,6 +39,15 @@ class ExpGUI:
             "What's 5 plus 20?: ",
             "Spell the word 'table' backwards: ",
             "Please type the word: 'psychology' to continue: "
+        ]
+        
+        self.keys = [
+            "date",
+            "location", 
+            "check1", "capital",
+            "math",
+            "reverse", 
+            "check2"    
         ]
         
         self.label = tk.Label(self.frame, text="", font =(Config.instructions_font, Config.instructions_font_size), bg="white")
@@ -90,10 +100,11 @@ class ExpGUI:
          
     def submit_answer(self):
         answer = self.entry.get().strip()
-        key = self.questions[self.question_index][1]
+        key = self.keys[self.question_index]
         self.responses[key] = answer
         self.question_index += 1
         self.next_question()
+
         
    
 # word recall tasks
@@ -108,9 +119,9 @@ class ExpGUI:
         self.entry.pack_forget()
         self.button.pack_forget()
 
-        self.root.after(3000, self.show_waiting_message)
+        self.root.after(3000, self.word_waiting_message)
 
-    def show_waiting_message(self):
+    def word_waiting_message(self):
         self.label.config(text=".........please wait.........")
         self.root.after(5000, self.recall_words)
 
@@ -148,8 +159,9 @@ class ExpGUI:
         
         self.entry.delete(0, tk.END)
         self.entry.pack(pady=10)
-        self.button.config(text="Submit", command=self.check_order)
         self.button.pack(pady=10)
+        self.button.config(text="Submit", command=self.check_order)
+        
 
     def check_order(self):
         try:
@@ -171,40 +183,67 @@ class ExpGUI:
  # RECALL DIGITS TASK  
  
     def start_dig_recall_task(self):
-        self.load_instructions("stimuli/dig_recall_instructions.txt", self.digit_recall)
+        self.load_instructions("stimuli/dig_recall_instructions.txt", lambda: self.digit_recall(5))
 
+        
+        
+    def digit_waiting_message(self):
+        self.label.config(text=".........please wait.........")
+        
+
+        self.entry.pack_forget()
+        self.button.pack_forget()
+
+
+        self.root.after(3000, self.ask_recall)
         
  
     def digit_recall(self, length):
-        self.digits = [random.randint(0,9) for i in range(length)]
-        # print("\nFor this next task, you will be asked to recall a sequence of numbers.")
-        # print(f"The numbers will be presented now: {' '.join(map(str, digits))}") 
-        # input("\nHit the 'enter key when you are ready to keep going. ")
-        # recall = input("Now recall the digits in the order they appeared. ")
-        self.label.config(text="For this next task, you will be asked to recall a sequence of numbers.")
-        self.label.config(text=f"The numbers will be presented now: {' '.join(map(str, self.digits))}")
-        self.entry.delete(0, tk.END)
-        self.entry.pack(pady=10)
-        self.button.config(text="Submit", command=self.ask_recall)
+        self.digits = [random.randint(0, 9) for _ in range(length)]
+        digit_str = " ".join(map(str, self.digits))
+
+        self.label.config(text=f"Please remember the following numbers:\n\n{digit_str}", image='')
         self.entry.pack_forget()
-    
+        self.button.pack_forget()
+
+   
+        self.root.after(3000, self.digit_waiting_message)
+
+    # def show_waiting_message(self):
+    #     self.label.config(text=".........please wait.........")
+    #     self.entry.pack_forget()
+    #     self.button.pack_forget()
+
+    #     self.root.after(2000, self.ask_recall)
+
     def ask_recall(self):
-        self.label.config(text="Now recall the digits in the order they appeared.") 
+        self.label.config(text="Now recall the digits in the order they appeared, seperated by spaces.")
         self.entry.delete(0, tk.END)
         self.entry.pack(pady=10)
         self.button.config(text="Submit", command=self.check_recall)
-        
+        self.button.pack(pady=10)
+
     def check_recall(self):
         try:
             recalled = [int(x) for x in self.entry.get().split()]
-        except:
+        except ValueError:
             recalled = []
+
         self.responses['digits_presented'] = self.digits
         self.responses['digits_recalled'] = recalled
+
         if recalled == self.digits:
             self.responses["recall_score"] = 1
         else:
             self.responses["recall_score"] = 0
+
+        self.label.config(text="Digit recall task complete! Click below to continue.")
+        self.entry.pack_forget()
+        self.button.config(text="Continue", command=self.start_shape_task)
+        self.button.pack(pady=10)
+
+
+
 
  # IDENTIFY SHAPES TASK 
  
@@ -235,13 +274,15 @@ class ExpGUI:
             
             self.label.config(text="The shape task is now complete!")
             self.entry.pack_forget()
-            self.button.pack_forget()
+            self.button.config(text="View Final Score", command=self.show_final_score)
+            self.button.pack(pady=10)
+
             return
         
         shape = self.shape_targets[self.shape_index]
         image_path = SHAPE_PATHS.get(shape)
         img = Image.open(image_path)
-        img = img.resize(300,300)
+        img = img.resize((300,300))
         self.tk_img = ImageTk.PhotoImage(img)
         self.label.config(image=self.tk_img, text="")
         
@@ -251,6 +292,9 @@ class ExpGUI:
         
     
     def check_shape(self):
+        if self.shape_index >= len(self.shape_targets):
+            return
+        
         guess = self.entry.get().strip().lower()
         correct_shape = self.shape_targets[self.shape_index]
         
@@ -274,55 +318,41 @@ class ExpGUI:
         #     inputs.append(user_guess)
         # return inputs
         
-    def calculate_score(self):
-        score = 0
         
-        # whats the date
-        todays_date = datetime.today().strftime("%m/%d/%Y") # googled how to get accurate date, learned about datetime library
-        if self.responses.get("date", "").strip() == todays_date:
-            score +=1
+    def show_final_score(self):
+        final_score = self.calculate_score()        
         
-        # where are you right now
-        accepted_locations = ["champaign, il", "champaign, illinoi", "urbana,il", "urbana, illinois"]
-        if self.responses.get("location", "").strip().lower() in accepted_locations:
-            score += 1
-            
-        # AC 1 - banana color
-        if self.responses.get("check1", "").lower() == "yellow":
-            score += 1
+
+        max_score = 17  
         
-        # capital
-        if self.responses.get("capital", "").lower() == "springfield":
-            score += 1
+        #chatgpt helped me with deciding ranges and writing for the feedback  
         
-        # math
-        if self.responses.get("math", "") == "25":
-            score += 1
-            
-        # AC 2
-        if self.responses.get("check2", "").lower() == "psychology":
-            score += 1
+        if final_score >= 14:
+            feedback = "Cognitive performance appears well within normal limits. Attention, recall, and processing are functioning at a high level."
+        elif final_score >= 10:
+            feedback = "Mild cognitive difficulty may be present. Overall performance is functional, with occasional lapses in memory or focus."
+        elif final_score >= 6:
+            feedback = "Moderate cognitive challenges observed. Some difficulty with attention and short-term memory may be impacting performance."
+        else:
+            feedback = "Significant cognitive impairment is suggested. Further assessment is recommended to evaluate memory, attention, and orientation."
+
         
-        # reverse spelling
-        if self.responses.get("reverse", "").lower() == "elbat":
-            score += 1
-            
-        # sorted digits
-        if self.responses.get('ordered_input', []) == self.responses.get('unordered_prompt', []):
-            score += 1
         
-        # recall digits
-        if self.responses.get('digits_presented', []) == self.responses.get('digits_recalled', []):
-            score += 1
         
-        # identify shapes
-        chosen_words = self.responses.get("sample_words", [])
-        recalled = self.responses.get("recalled_words", [])
-        correct_words = [word for word in recalled if word.strip() in chosen_words] # chatgpt helped me w string comprehension 
-        score += len(correct_words)
         
-        self.score = score
-        return score
+
+        show_scores = (
+            f"You have completed all the tasks!\n\n"
+            f"Your final score is: {final_score} / {max_score}\n\n"
+            f"{feedback}"
+        )
+
+        self.label.config(image='', text=show_scores, justify="left", wraplength=Config.window_width - 100)
+        self.entry.pack_forget()
+        self.button.config(text="Exit", command=self.root.quit)
+        self.button.pack(pady=10)
+
+
         
            
     # def ask_initial_questions(self):
@@ -404,20 +434,20 @@ class ExpGUI:
         if self.responses.get('digits_presented', []) == self.responses.get('digits_recalled', []):
             score += 1
         
-        # identify shapes
+        # recall words
         chosen_words = self.responses.get("sample_words", [])
         recalled = self.responses.get("recalled_words", [])
-        correct_words = [word for word in recalled if word.strip() in chosen_words] # chatgpt helped me w string comprehension 
+        correct_words = [word for word in recalled if word.strip() in chosen_words] # chatgpt helped me w string comprehension to simplify
         score += len(correct_words)
         
-        self.score = score
+        
         
         score += self.responses.get("order_score", 0)
         score += self.responses.get("recall_score", 0)
         score += self.responses.get("shape_score", 0)
-        score += self.score 
-
-        return self.score
+        
+        self.score = score
+        return score
             
 
     
